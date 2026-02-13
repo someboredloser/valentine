@@ -1,0 +1,497 @@
+<!DOCTYPE html> 
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>С 14 февраля ❤️</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#3b0019,#7a003c,#ff4d88);
+  background-size:400% 400%;
+  animation:bg 12s ease infinite;
+  color:white;
+  overflow:hidden;
+  height:100vh;
+}
+@keyframes bg{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+#mainScreen, .screen{
+  display:flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  width:100%;
+  position:relative;
+  text-align:center;
+}
+#welcomeText{
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+#startBtn{
+  padding:12px 24px;
+  font-size:16px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(45deg,#ff2d75,#ff8fab);
+  color:white;
+  cursor:pointer;
+  box-shadow:0 0 15px rgba(255,105,180,.6);
+  transition:.3s;
+}
+#startBtn:hover{transform:scale(1.08);}
+#modal{
+position:fixed;
+top:0; left:0; width:100%; height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:100;
+}
+#modalContent{
+background:#ff4d88;
+padding:30px 25px;
+border-radius:20px;
+text-align:center;
+max-width:320px;
+box-shadow:0 0 30px rgba(255,255,255,0.5);
+}
+#modalContent p{margin:15px 0;font-size:18px;}
+#modalContent button{
+  margin-top:15px;
+  padding:12px 24px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(45deg,#ff87b9,#ff2d75);
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  box-shadow:0 0 15px rgba(255,105,180,.6);
+  transition:.3s;
+}
+#modalContent button:hover{transform:scale(1.05);}
+.hearts-row{display:flex;justify-content:center;gap:18px;margin-top:20px;flex-wrap:wrap;}
+.heart{font-size:44px;cursor:pointer;transition:.3s;}
+.heart:hover{transform:scale(1.25);filter:drop-shadow(0 0 10px rgba(255,150,200,.8));}
+.grid{display:grid;grid-template-columns:repeat(4,70px);gap:12px;justify-content:center;margin-top:20px;}
+.card{width:70px;height:70px;background:#ff4d88;border-radius:14px;font-size:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.3s;}
+.card:hover{transform:scale(1.1);}
+.bar{width:260px;height:26px;border:2px solid white;margin:20px auto;border-radius:20px;overflow:hidden;}
+.fill{height:100%;width:0%;background:linear-gradient(90deg,#ff2d75,#ff8fab);transition:.2s;}
+#chargeBtn{padding:12px 24px;border:none;border-radius:30px;background:linear-gradient(45deg,#ff87b9,#ff2d75);color:white;font-size:16px;cursor:pointer;box-shadow:0 0 15px rgba(255,105,180,.6);transition:.3s;margin-top:10px;}
+#chargeBtn:hover{transform:scale(1.08);}
+#basket{font-size:42px;margin-top:20px;}
+.fall{position:absolute;top:0;transition:.3s;font-size:34px;}
+#passwordScreen, #final{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+/* ★ ФИНАЛЬНЫЙ ЭКРАН */
+#finalContent{
+  max-width:600px;
+  text-align:center;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:30px;
+  z-index:1;
+  position:relative;
+}
+#finalTitle{
+  font-size:36px;
+  margin-bottom:20px;
+  text-align:center;
+  text-shadow:0 0 20px rgba(255,255,255,.8);
+}
+#finalText{
+  font-size:20px;
+  line-height:1.6;
+  text-align:center;
+}
+#bigHeart{
+  font-size:120px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  color:red;
+  animation: pulse 1.5s infinite;
+  transition: transform 0.3s;
+}
+#bigHeart:hover{
+  transform: scale(1.2);
+}
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.15);}
+  100%{transform:scale(1);}
+}
+#finalMessage{
+  font-size:36px;
+  font-weight:bold;
+  color:#ff2d75;
+  display:none;
+  text-shadow: 0 0 20px rgba(255,255,255,.5);
+}
+#repeatBtn{
+  padding:12px 24px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(45deg,#ff87b9,#ff2d75);
+  color:white;
+  cursor:pointer;
+  box-shadow:0 0 15px rgba(255,105,180,.6);
+  display:none;
+}
+#repeatBtn:hover{transform:scale(1.05);}
+#finalEffects{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:0;
+}
+.blink{
+  position:absolute;
+  width:12px;
+  height:12px;
+  background:radial-gradient(circle,#fff,#ff2d75,transparent);
+  border-radius:50%;
+  opacity:0.8;
+  animation:blinkAnim 2s linear infinite;
+}
+@keyframes blinkAnim{0%{transform:translateY(0) scale(0.5); opacity:0.7;}50%{opacity:1; transform:translateY(-20px) scale(1);}100%{transform:translateY(0) scale(0.5); opacity:0;}}
+.star{
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:radial-gradient(circle,#fff,#ff2d75,transparent);
+  border-radius:50%;
+  opacity:0.7;
+  animation:blink 2s linear infinite;
+}
+@keyframes blink{0%,100%{opacity:0.3;}50%{opacity:1;}}
+/* ★ СТИЛЬ ДЛЯ ФОРМЫ ВВОДА ИМЕНИ */
+#passwordScreen input[type=text]{
+  padding:12px 20px;
+  border-radius:25px;
+  border:none;
+  font-size:18px;
+  width:220px;
+  text-align:center;
+  background:linear-gradient(145deg,#ffb6c1,#ff4d88);
+  color:white;
+  box-shadow: 0 0 15px rgba(255,105,180,0.7);
+}
+#passwordScreen input[type=text]::placeholder{
+  color:rgba(255,255,255,0.8);
+}
+#passwordScreen button{
+  padding:12px 24px;
+  margin-top:15px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(45deg,#ff87b9,#ff2d75);
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  box-shadow:0 0 15px rgba(255,105,180,.6);
+}
+#passwordScreen button:hover{transform:scale(1.05);}
+
+/* ★ Оптимизация для мобильных */
+@media (max-width: 480px) {
+  #welcomeText { font-size: 20px; margin-bottom: 15px; }
+  #startBtn, #chargeBtn, #passwordScreen button, #repeatBtn { font-size: 14px; padding: 10px 20px; }
+  .hearts-row { gap: 12px; }
+  .heart { font-size: 36px; }
+  .grid { grid-template-columns: repeat(4, 60px); gap: 8px; }
+  .card { width: 60px; height: 60px; font-size: 28px; }
+  .bar { width: 200px; height: 20px; }
+  #passwordScreen input[type=text] { width: 180px; font-size: 16px; padding: 10px 15px; }
+  #finalTitle { font-size: 28px; }
+  #finalText { font-size: 18px; }
+  #bigHeart { font-size: 90px; }
+  #finalMessage { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<div id="mainScreen">
+  <div id="welcomeText">Добро пожаловать, любимая ❤️</div>
+  <button id="startBtn">Начать игру</button>
+</div>
+
+<div id="modal">
+<div id="modalContent">
+<p id="modalText"></p>
+<button id="modalBtn">Далее</button>
+</div>
+</div>
+
+<div id="g1" class="screen">
+<h2>Выбери сердце, которое бьётся сильнее ❤️</h2>
+<p>Прислушайся к интуицию</p>
+<div class="hearts-row" id="hearts"></div>
+</div>
+
+<div id="g2" class="screen">
+<h2>Найди пары ❤️</h2>
+<div class="grid" id="memory"></div>
+</div>
+
+<div id="g3" class="screen">
+<h2>Заряди сердце любовью ❤️</h2>
+<p>Нажимай быстро, пока заряд не упал</p>
+<div class="bar"><div class="fill" id="charge"></div></div>
+<button id="chargeBtn" onclick="charge()">❤️ Нажимай ❤️</button>
+</div>
+
+<div id="g4" class="screen">
+<h2>Поймай сердца в корзину 🧺 ❤️</h2>
+<p>Кликай по сердечкам</p>
+<div id="basket">🧺</div>
+</div>
+
+<div id="g5" class="screen">
+<h2>Найди особенное сердце 🌹</h2>
+<div class="hearts-row" id="special"></div>
+</div>
+
+<div id="passwordScreen" class="screen">
+<h2>Для финала введи имя:</h2>
+<input type="text" id="passInput" placeholder="Введите имя">
+<button onclick="checkPassword()">Подтвердить</button>
+</div>
+
+<div id="final" class="screen">
+  <div id="finalContent">
+    <button id="bigHeart">❤️ НАЖМИ ❤️</button>
+    <div id="finalMessage">Ты моя валентинка, люблю тебя❤️</div>
+    <button id="repeatBtn">Повторить игру</button>
+    <div id="finalEffects"></div>
+  </div>
+</div>
+
+<script>
+let step=0;
+const modal=document.getElementById('modal');
+const modalText=document.getElementById('modalText');
+const modalBtn=document.getElementById('modalBtn');
+const startBtn=document.getElementById('startBtn');
+const mainScreen=document.getElementById('mainScreen');
+
+function createStars(container,count=50){
+  for(let i=0;i<count;i++){
+    let s=document.createElement("div");
+    s.className="star";
+    s.style.left=Math.random()*100+"%";
+    s.style.top=Math.random()*100+"%";
+    s.style.width=(2+Math.random()*3)+"px";
+    s.style.height=s.style.width;
+    s.style.animationDuration=(1+Math.random()*2)+"s";
+    container.appendChild(s);
+  }
+}
+
+function showModal(text,nextStep,isSuccess=true){
+    modalText.innerHTML = text;
+    modal.style.display = 'flex';
+    modalBtn.innerText = isSuccess ? "Далее" : "Ок";
+    modalBtn.onclick = () => {
+        modal.style.display = 'none';
+        if(nextStep && isSuccess) show(nextStep);
+    };
+}
+
+let power = 0;
+let decayInterval;
+let lastClick = Date.now();
+
+function startDecay(){
+    decayInterval = setInterval(()=>{
+        if(Date.now() - lastClick > 300){
+            power -= 1.5;
+            if(power < 0) power = 0;
+            document.getElementById("charge").style.width = power + "%";
+        }
+    }, 120);
+}
+
+function stopDecay(){
+    clearInterval(decayInterval);
+}
+
+function show(n){
+    document.querySelectorAll(".screen").forEach(s=>s.style.display="none");
+    mainScreen.style.display = "none";
+    let screen=document.getElementById("g"+n);
+    if(screen) {
+        screen.style.display="flex"; 
+        createStars(screen);
+        if(n===3) startDecay(); else stopDecay();
+    }
+    step=n;
+}
+
+startBtn.onclick = () => { show(1); loadHearts(); };
+
+function loadHearts(){
+    let c = document.getElementById("hearts");
+    c.innerHTML = "";
+    let good = Math.floor(Math.random()*5);
+    for(let i=0;i<5;i++){
+        let h = document.createElement("span");
+        h.className="heart";
+        h.innerHTML="❤️";
+        h.onclick = () => {
+            if(i === good){
+                showModal("Угадала, умничка ❤️",2,true);
+                loadMemory();
+            } else showModal("Попробуй ещё!", null,false);
+        }
+        c.appendChild(h);
+    }
+}
+
+let first=null,lock=false,found=0;
+function loadMemory(){
+    found=0;
+    let arr=["💖","💖","💘","💘","🌹","🌹","💍","💍","💎","💎","❤️","❤️","🎁","🎁","🌸","🌸"];
+    arr.sort(()=>Math.random()-.5);
+    let g=document.getElementById("memory");
+    g.innerHTML="";
+    arr.forEach(e=>{
+        let c=document.createElement("div");
+        c.className="card";
+        c.onclick=()=>{
+            if(lock||c.innerHTML) return;
+            c.innerHTML=e;
+            if(!first){first=c}else{
+                if(first.innerHTML===c.innerHTML){
+                    found++;
+                    first=null;
+                    if(found===8) showModal("Умничка, всё нашла! ❤️",3,true);
+                }else{
+                    lock=true;
+                    setTimeout(()=>{c.innerHTML="";first.innerHTML="";first=null;lock=false;},600);
+                }
+            }
+        }
+        g.appendChild(c);
+    });
+}
+
+function charge(){
+    lastClick = Date.now();
+    power += 8;
+    if(power > 100) power = 100;
+    document.getElementById("charge").style.width = power + "%";
+    if(power >= 100){
+        stopDecay();
+        showModal("Сердце заполнено ❤️",4,true);
+        falling();
+    }
+}
+
+function falling(){
+    let caught=0;
+    let total=25;
+    let interval=setInterval(()=>{
+        let h=document.createElement("div");
+        h.className="fall";
+        h.innerHTML="❤️";
+        h.style.fontSize=(20+Math.random()*20)+"px";
+        h.style.left=Math.random()*90+"%";
+        document.getElementById('g4').appendChild(h); 
+        h.onclick=()=>{
+            h.remove();
+            caught++;
+            if(caught>=total){
+                clearInterval(interval);
+                showModal("Ты собрала всю любовь ❤️",5,true);
+                loadSpecial();
+            }
+        }
+        let y=0;
+        let f=setInterval(()=>{y+=2+Math.random()*2; h.style.top=y+"px"; if(y>window.innerHeight){h.remove(); clearInterval(f);}},20);
+    },150);
+}
+
+function loadSpecial(){
+    let c=document.getElementById("special");
+    c.innerHTML="";
+    let good=Math.floor(Math.random()*9);
+    for(let i=0;i<9;i++){
+        let h=document.createElement("span");
+        h.className="heart";
+        h.innerHTML="❤️";
+        h.onclick=()=>{
+            if(i===good){
+                showModal("Отлично! Введи пароль для финала ❤️", null,true);
+                document.querySelectorAll(".screen").forEach(s=>s.style.display="none");
+                document.getElementById("passwordScreen").style.display="flex";
+            }else loadSpecial();
+        }
+        c.appendChild(h);
+    }
+}
+
+// ★ Проверка пароля с множественными вариантами
+function checkPassword(){
+    let val=document.getElementById("passInput").value.trim().toLowerCase();
+    const validNames = ["влада","владислава","vlada","vladyslava"];
+    if(validNames.includes(val)){
+        document.getElementById("passwordScreen").style.display="none";
+        document.getElementById("final").style.display="flex";
+        startFinalEffects();
+    }else showModal("Неверно 😘 Попробуй снова ❤️",null,false);
+}
+
+function startFinalEffects(){
+    let container=document.getElementById("finalEffects");
+    for(let i=0;i<40;i++){
+        let b=document.createElement("div");
+        b.className="blink";
+        b.style.left=Math.random()*100+"%";
+        b.style.top=Math.random()*100+"%";
+        b.style.width=(5+Math.random()*15)+"px";
+        b.style.height=b.style.width;
+        b.style.animationDuration=(1+Math.random()*2)+"s";
+        container.appendChild(b);
+    }
+}
+
+// ★ Финальный интерактив
+const bigHeart = document.getElementById('bigHeart');
+const finalMessage = document.getElementById('finalMessage');
+const repeatBtn = document.getElementById('repeatBtn');
+
+bigHeart.onclick = () => {
+  bigHeart.style.display = 'none';
+  finalMessage.style.display = 'block';
+  repeatBtn.style.display = 'inline-block';
+}
+
+// ★ Исправляем кнопку повторить
+repeatBtn.onclick = () => {
+    location.reload();
+};
+</script>
+</body>
+</html>
