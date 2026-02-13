@@ -88,7 +88,7 @@ box-shadow:0 0 30px rgba(255,255,255,0.5);
 #chargeBtn{padding:12px 24px;border:none;border-radius:30px;background:linear-gradient(45deg,#ff87b9,#ff2d75);color:white;font-size:16px;cursor:pointer;box-shadow:0 0 15px rgba(255,105,180,.6);transition:.3s;margin-top:10px;}
 #chargeBtn:hover{transform:scale(1.08);}
 #basket{font-size:42px;margin-top:20px;}
-.fall{position:absolute;top:0;font-size:34px;pointer-events:auto;}
+.fall{position:absolute;top:0;font-size:34px;will-change:transform;pointer-events:auto;}
 #passwordScreen, #final{
   display:flex;
   flex-direction:column;
@@ -185,7 +185,6 @@ box-shadow:0 0 30px rgba(255,255,255,0.5);
   animation:blink 2s linear infinite;
 }
 @keyframes blink{0%,100%{opacity:0.3;}50%{opacity:1;}}
-/* ★ СТИЛЬ ДЛЯ ФОРМЫ ВВОДА ИМЕНИ */
 #passwordScreen input[type=text]{
   padding:12px 20px;
   border-radius:25px;
@@ -212,8 +211,6 @@ box-shadow:0 0 30px rgba(255,255,255,0.5);
   box-shadow:0 0 15px rgba(255,105,180,.6);
 }
 #passwordScreen button:hover{transform:scale(1.05);}
-
-/* ★ Оптимизация для мобильных */
 @media (max-width: 480px) {
   #welcomeText { font-size: 20px; margin-bottom: 15px; }
   #startBtn, #chargeBtn, #passwordScreen button, #repeatBtn { font-size: 14px; padding: 10px 20px; }
@@ -409,6 +406,7 @@ function charge(){
     }
 }
 
+// ★ Исправление для телефонов: tap сразу срабатывает
 function falling(){
     let caught=0;
     let total=25;
@@ -418,10 +416,11 @@ function falling(){
         h.innerHTML="❤️";
         h.style.fontSize=(20+Math.random()*20)+"px";
         h.style.left=Math.random()*90+"%";
-        h.style.top="-50px"; // начальная позиция
-        h.style.willChange = "transform"; // для плавного рендера
+        h.style.top="-50px";
         document.getElementById('g4').appendChild(h); 
-        h.onclick=()=>{
+        // on click + touchstart
+        function catchHeart(){ 
+            if(!h.parentElement) return;
             h.remove();
             caught++;
             if(caught>=total){
@@ -430,6 +429,8 @@ function falling(){
                 loadSpecial();
             }
         }
+        h.addEventListener("click", catchHeart);
+        h.addEventListener("touchstart", catchHeart);
         let y=0;
         let f=setInterval(()=>{
             y += 2 + Math.random()*2;
@@ -438,7 +439,7 @@ function falling(){
                 h.remove();
                 clearInterval(f);
             }
-        },16); // 16ms ~ 60fps для плавности
+        },16);
     },150);
 }
 
@@ -477,7 +478,7 @@ function startFinalEffects(){
         let b=document.createElement("div");
         b.className="blink";
         b.style.left=Math.random()*100+"%";
-        b.style.top=Math.random()*100+"%";
+        b.style.top=Math.random()*100+"px";
         b.style.width=(5+Math.random()*15)+"px";
         b.style.height=b.style.width;
         b.style.animationDuration=(1+Math.random()*2)+"s";
