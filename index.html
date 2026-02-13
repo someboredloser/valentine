@@ -1,8 +1,8 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>С 14 февраля ❤️</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -88,7 +88,7 @@ box-shadow:0 0 30px rgba(255,255,255,0.5);
 #chargeBtn{padding:12px 24px;border:none;border-radius:30px;background:linear-gradient(45deg,#ff87b9,#ff2d75);color:white;font-size:16px;cursor:pointer;box-shadow:0 0 15px rgba(255,105,180,.6);transition:.3s;margin-top:10px;}
 #chargeBtn:hover{transform:scale(1.08);}
 #basket{font-size:42px;margin-top:20px;}
-.fall{position:absolute;top:0;transition:.3s;font-size:34px;}
+.fall{position:absolute;top:0;font-size:34px;pointer-events:auto;}
 #passwordScreen, #final{
   display:flex;
   flex-direction:column;
@@ -418,6 +418,8 @@ function falling(){
         h.innerHTML="❤️";
         h.style.fontSize=(20+Math.random()*20)+"px";
         h.style.left=Math.random()*90+"%";
+        h.style.top="-50px"; // начальная позиция
+        h.style.willChange = "transform"; // для плавного рендера
         document.getElementById('g4').appendChild(h); 
         h.onclick=()=>{
             h.remove();
@@ -429,7 +431,14 @@ function falling(){
             }
         }
         let y=0;
-        let f=setInterval(()=>{y+=2+Math.random()*2; h.style.top=y+"px"; if(y>window.innerHeight){h.remove(); clearInterval(f);}},20);
+        let f=setInterval(()=>{
+            y += 2 + Math.random()*2;
+            h.style.transform = `translateY(${y}px)`;
+            if(y>window.innerHeight){
+                h.remove();
+                clearInterval(f);
+            }
+        },16); // 16ms ~ 60fps для плавности
     },150);
 }
 
@@ -452,7 +461,6 @@ function loadSpecial(){
     }
 }
 
-// ★ Проверка пароля с множественными вариантами
 function checkPassword(){
     let val=document.getElementById("passInput").value.trim().toLowerCase();
     const validNames = ["влада","владислава","vlada","vladyslava"];
@@ -477,7 +485,6 @@ function startFinalEffects(){
     }
 }
 
-// ★ Финальный интерактив
 const bigHeart = document.getElementById('bigHeart');
 const finalMessage = document.getElementById('finalMessage');
 const repeatBtn = document.getElementById('repeatBtn');
@@ -488,7 +495,6 @@ bigHeart.onclick = () => {
   repeatBtn.style.display = 'inline-block';
 }
 
-// ★ Исправляем кнопку повторить
 repeatBtn.onclick = () => {
     location.reload();
 };
